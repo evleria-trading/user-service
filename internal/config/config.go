@@ -5,6 +5,6 @@ type Config struct {
 	PostgresPass       string `env:"POSTGRES_PASSWORD" envDefault:""`
 	PostgresHost       string `env:"POSTGRES_HOST" envDefault:"localhost"`
 	PostgresPort       int    `env:"POSTGRES_PORT" envDefault:"5432"`
-	PostgresDb         string `env:"POSTGRES_DB" envDefault:"user_db"`
+	PostgresDb         string `env:"POSTGRES_DB" envDefault:"users_db"`
 	PostgresSSLDisable bool   `env:"POSTGRES_SSL_DISABLE" envDefault:"false"`
 }
