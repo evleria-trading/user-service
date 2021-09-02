@@ -1,0 +1,19 @@
+syntax="proto3";
+
+package pb;
+
+option go_package = "/pb";
+import "google/protobuf/empty.proto";
+
+service UserService {
+  rpc CreateUser (google.protobuf.Empty) returns (CreateUserResponse) {}
+  rpc SetBalance (SetBalanceRequest) returns (google.protobuf.Empty) {}
+}
+
+message CreateUserResponse {
+  int64 user_id = 1;
+}
+
+message SetBalanceRequest {
+  double balance = 1;
+}
