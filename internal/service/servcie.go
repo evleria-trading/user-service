@@ -2,12 +2,18 @@ package service
 
 import (
 	"context"
+	"errors"
 	"github.com/evleria-trading/user-service/internal/repository"
+)
+
+var (
+	ErrBalanceIsNegative = errors.New("balance is negative")
+	ErrUserNotFound      = errors.New("user not found")
 )
 
 type User interface {
 	CreateUser(ctx context.Context) (int64, error)
-	SetBalance(ctx context.Context, balance float64) error
+	SetBalance(ctx context.Context, balance float64, id int64) error
 }
 
 type user struct {
@@ -28,6 +34,13 @@ func (u *user) CreateUser(ctx context.Context) (int64, error) {
 	return id, nil
 }
 
-func (u *user) SetBalance(ctx context.Context, balance float64) error {
-	panic("implement me")
+func (u *user) SetBalance(ctx context.Context, balance float64, id int64) error {
+	if balance < 0 {
+		return ErrBalanceIsNegative
+	}
+	err := u.userRepository.UpdateBalance(ctx, balance, id)
+	if err == repository.ErrUserNotFound {
+		return ErrUserNotFound
+	}
+	return err
 }

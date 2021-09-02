@@ -16,4 +16,5 @@ message CreateUserResponse {
 
 message SetBalanceRequest {
   double balance = 1;
+  int64  user_id = 2;
 }

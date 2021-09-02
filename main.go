@@ -22,6 +22,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	db := getPostgres(cfg)
 	defer db.Close()
 
