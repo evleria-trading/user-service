@@ -14,6 +14,7 @@ var (
 type User interface {
 	CreateUser(ctx context.Context) (int64, error)
 	SetBalance(ctx context.Context, balance float64, id int64) error
+	GetBalanceByID(ctx context.Context, id int64) (float64, error)
 }
 
 type user struct {
@@ -43,4 +44,12 @@ func (u *user) SetBalance(ctx context.Context, balance float64, id int64) error 
 		return ErrUserNotFound
 	}
 	return err
+}
+
+func (u *user) GetBalanceByID(ctx context.Context, id int64) (float64, error) {
+	bal, err := u.userRepository.GetBalance(ctx, id)
+	if err != nil {
+		return 0, err
+	}
+	return bal, nil
 }

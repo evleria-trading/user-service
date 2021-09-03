@@ -40,6 +40,16 @@ func (u *UserService) SetBalance(ctx context.Context, request *pb.SetBalanceRequ
 	return &empty.Empty{}, nil
 }
 
+func (u *UserService) GetBalance(ctx context.Context, request *pb.GetBalanceRequest) (*pb.GetBalanceResponse, error) {
+	bal, err := u.service.GetBalanceByID(ctx, request.UserId)
+	if err != nil {
+		return nil, status.Error(getStatusCode(err), err.Error())
+	}
+	return &pb.GetBalanceResponse{
+		Balance: bal,
+	}, nil
+}
+
 func getStatusCode(err error) codes.Code {
 	switch err {
 	case service.ErrUserNotFound:
