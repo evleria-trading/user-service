@@ -22,3 +22,5 @@ services:
 
 volumes:
   pg-data:
+    external: true
+    name: evleria-trading_pg-data
