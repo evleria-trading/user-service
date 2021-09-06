@@ -1,7 +1,7 @@
 compose:
-	docker-compose build && docker-compose up -d
+	docker-compose build && docker-compose up -d --remove-orphans
 compose-with-migration:
-	docker-compose -f docker-compose.yml -f docker-compose-migrate.yml up -d
+	docker-compose build && docker-compose -f docker-compose.yml -f docker-compose-migrate.yml up -d --remove-orphans
 compose-down:
 	docker-compose down --remove-orphans
 protoc:
