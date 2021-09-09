@@ -44,7 +44,7 @@ func (u *user) UpdateBalance(ctx context.Context, balance float64, id int64) err
 
 func (u *user) GetBalance(ctx context.Context, id int64) (float64, error) {
 	var bal float64
-	err := u.db.QueryRow(ctx, `SELECT * FROM users WHERE user_id=$1;`, id).Scan(&bal)
+	err := u.db.QueryRow(ctx, `SELECT balance FROM users WHERE user_id=$1;`, id).Scan(&bal)
 
 	if err != nil {
 		if err == pgx.ErrNoRows {
