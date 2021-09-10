@@ -9,6 +9,7 @@ service UserService {
   rpc CreateUser (google.protobuf.Empty) returns (CreateUserResponse) {}
   rpc SetBalance (SetBalanceRequest) returns (google.protobuf.Empty) {}
   rpc GetBalance (GetBalanceRequest) returns (GetBalanceResponse) {}
+  rpc AddToBalance (AddToBalanceRequest) returns (AddToBalanceResponse) {}
 }
 
 message CreateUserResponse {
@@ -26,4 +27,13 @@ message GetBalanceRequest{
 
 message GetBalanceResponse {
   double balance = 2;
+}
+
+message AddToBalanceRequest {
+  int64 user_id = 1;
+  double diff = 2;
+}
+
+message AddToBalanceResponse {
+  double balance = 1;
 }

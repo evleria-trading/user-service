@@ -22,6 +22,7 @@ type UserServiceClient interface {
 	CreateUser(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	SetBalance(ctx context.Context, in *SetBalanceRequest, opts ...grpc.CallOption) (*empty.Empty, error)
 	GetBalance(ctx context.Context, in *GetBalanceRequest, opts ...grpc.CallOption) (*GetBalanceResponse, error)
+	AddToBalance(ctx context.Context, in *AddToBalanceRequest, opts ...grpc.CallOption) (*AddToBalanceResponse, error)
 }
 
 type userServiceClient struct {
@@ -59,6 +60,15 @@ func (c *userServiceClient) GetBalance(ctx context.Context, in *GetBalanceReques
 	return out, nil
 }
 
+func (c *userServiceClient) AddToBalance(ctx context.Context, in *AddToBalanceRequest, opts ...grpc.CallOption) (*AddToBalanceResponse, error) {
+	out := new(AddToBalanceResponse)
+	err := c.cc.Invoke(ctx, "/pb.UserService/AddToBalance", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility
@@ -66,6 +76,7 @@ type UserServiceServer interface {
 	CreateUser(context.Context, *empty.Empty) (*CreateUserResponse, error)
 	SetBalance(context.Context, *SetBalanceRequest) (*empty.Empty, error)
 	GetBalance(context.Context, *GetBalanceRequest) (*GetBalanceResponse, error)
+	AddToBalance(context.Context, *AddToBalanceRequest) (*AddToBalanceResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }
 
@@ -81,6 +92,9 @@ func (UnimplementedUserServiceServer) SetBalance(context.Context, *SetBalanceReq
 }
 func (UnimplementedUserServiceServer) GetBalance(context.Context, *GetBalanceRequest) (*GetBalanceResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetBalance not implemented")
+}
+func (UnimplementedUserServiceServer) AddToBalance(context.Context, *AddToBalanceRequest) (*AddToBalanceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddToBalance not implemented")
 }
 func (UnimplementedUserServiceServer) mustEmbedUnimplementedUserServiceServer() {}
 
@@ -149,6 +163,24 @@ func _UserService_GetBalance_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserService_AddToBalance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddToBalanceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServiceServer).AddToBalance(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.UserService/AddToBalance",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServiceServer).AddToBalance(ctx, req.(*AddToBalanceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserService_ServiceDesc is the grpc.ServiceDesc for UserService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -167,6 +199,10 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBalance",
 			Handler:    _UserService_GetBalance_Handler,
+		},
+		{
+			MethodName: "AddToBalance",
+			Handler:    _UserService_AddToBalance_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
